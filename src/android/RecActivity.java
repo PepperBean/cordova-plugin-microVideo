@@ -245,11 +245,12 @@ public class RecActivity extends android.app.Activity implements SurfaceHolder.C
             mMediaRecorder.setVideoEncodingBitRate(1500000);
 //                mMediaRecorder.setVideoEncodingBitRate(1 * 1024 * 1024 * 100);
             mMediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT);
-            mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
 
             // TODO: 2016/10/20 临时写个文件地址, 稍候该!!!
-            File targetDir = Environment.
-                    getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+//            File targetDir = Environment.
+//                    getExternalStoragePublicDirectory(Environment.DIRECTORY_MOVIES);
+            File targetDir = this.getApplicationContext().getFilesDir();
             mTargetFile = new File(targetDir,
                     SystemClock.currentThreadTimeMillis() + ".mp4");
             mMediaRecorder.setOutputFile(mTargetFile.getAbsolutePath());
@@ -258,6 +259,7 @@ public class RecActivity extends android.app.Activity implements SurfaceHolder.C
             mMediaRecorder.setOrientationHint(90);
             // mMediaRecorder.setOnErrorListener();
             mMediaRecorder.prepare();
+            android.util.Log.i("RecActivity","before recorder start!!");
             //正式录制
             mMediaRecorder.start();
             isRecording = true;
@@ -414,6 +416,7 @@ public class RecActivity extends android.app.Activity implements SurfaceHolder.C
 //            case "main_press_control": {
             switch (action) {
                 case MotionEvent.ACTION_DOWN:
+                    android.util.Log.i("RecActivity","ACTION_DOWN");
                     if (ex > left && ex < right) {
                         mProgressBar.setCancel(false);
                         //显示上滑取消
@@ -454,6 +457,7 @@ public class RecActivity extends android.app.Activity implements SurfaceHolder.C
 
                     break;
                 case MotionEvent.ACTION_UP:
+                    android.util.Log.i("RecActivity","ACTION_UP");
                     if (ex > left && ex < right) {
                         mTvTip.setVisibility(View.INVISIBLE);
                         mProgressBar.setVisibility(View.INVISIBLE);
@@ -488,6 +492,7 @@ public class RecActivity extends android.app.Activity implements SurfaceHolder.C
                     }
                     break;
                 case MotionEvent.ACTION_MOVE:
+                    android.util.Log.i("RecActivity","ACTION_MOVE");
                     if (ex > left && ex < right) {
                         float currentY = event.getY();
                         if (downY - currentY > 10) {
@@ -496,6 +501,25 @@ public class RecActivity extends android.app.Activity implements SurfaceHolder.C
                         }
                     }
                     break;
+                case MotionEvent.ACTION_CANCEL:
+                    if(!isRunning)
+                    {
+                        break;
+                    }
+                    android.util.Log.i("RecActivity","ACTION_CANCEL");
+                    stopRecordUnSave();
+                    isCancel = false;
+                    Toast toast = Toast.makeText(this, "取消录制", Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                    mProgressBar.setCancel(true);
+                    mTvTip.setVisibility(View.INVISIBLE);
+                    mProgressBar.setVisibility(View.INVISIBLE);
+                    mProgress = 0;
+                    break;
+                case MotionEvent.ACTION_OUTSIDE:
+                    android.util.Log.i("RecActivity","ACTION_OUTSIDE");
+                    break;
 //                }
 //                break;
 
@@ -503,6 +527,20 @@ public class RecActivity extends android.app.Activity implements SurfaceHolder.C
 
         }
         return ret;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            Intent intent = new Intent();
+            intent.putExtra("back", "CANCELED");
+            setResult(RESULT_CANCELED, intent);
+            finish();
+            return true;
+        }else {
+            return super.onKeyDown(keyCode, event);
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////////////

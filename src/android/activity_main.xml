@@ -24,7 +24,7 @@
                 <com.pepperbean.plugin.BothWayProgressBar
                     android:id="@+id/main_progress_bar"
                     android:layout_width="match_parent"
-                    android:layout_height="4dp"
+                    android:layout_height="3dp"
                     android:background="#000"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -47,9 +47,9 @@
         android:id="@+id/main_cancel_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="20dp"
+        android:layout_gravity="bottom|left"
+        android:layout_marginLeft="20dp"
         android:layout_marginBottom="20dp"
-        android:text="返回"
+        android:text="←返回"
         android:textColor="#FFFFFF"/>
 </FrameLayout>

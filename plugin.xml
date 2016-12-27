@@ -26,11 +26,11 @@
             <uses-feature android:name="android.hardware.camera" />
             <uses-feature android:name="android.hardware.camera.autofocus" />
             <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
         </config-file>
         <source-file src="src/android/_CordovaPlugin.java" target-dir="src/com/pepperbean/plugin/" />
         <source-file src="src/android/BothWayProgressBar.java" target-dir="src/com/pepperbean/plugin/" />
         <source-file src="src/android/RecActivity.java" target-dir="src/com/pepperbean/plugin/" />
         <source-file src="src/android/activity_main.xml" target-dir="res/layout" />
+        <source-file src="src/android/textviewbg.xml" target-dir="res/drawable" />
     </platform>
 </plugin>
